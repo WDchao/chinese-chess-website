@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>象棋網站 - 比賽區</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* 狀態標籤樣式 */
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px; /* fully rounded */
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .status-badge.upcoming { background-color: #fca5a5; color: #dc2626; } /* red-300 / red-700 */
+        .status-badge.registering { background-color: #fcd34d; color: #d97706; } /* yellow-300 / yellow-700 */
+        .status-badge.in-progress { background-color: #a7f3d0; color: #047857; } /* green-300 / green-700 */
+        .status-badge.ended { background-color: #d1d5db; color: #4b5563; } /* gray-300 / gray-700 */
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 導覽列 (Navbar) - 複製自首頁 -->
+    <header class="bg-gray-800 text-white shadow-md p-4 sticky top-0 z-50 rounded-b-lg">
+        <nav class="container mx-auto flex justify-between items-center flex-wrap">
+            <div class="flex items-center text-xl font-bold rounded-md">
+                <img src="https://placehold.co/40x40/FFD700/000?text=象" alt="象棋網站Logo" class="mr-2 rounded-full">
+                象棋戰略中心
+            </div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="index.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">首頁</a></li>
+                <li><a href="play.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">開始對弈</a></li>
+                <li><a href="learn.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">學習教室</a></li>
+                <li><a href="#" class="text-yellow-400 font-bold rounded-md p-2">比賽</a></li>
+                <li><a href="ranking.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">排行榜</a></li>
+            </ul>
+            <div class="hidden md:flex space-x-3">
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg">
+                    註冊
+                </button>
+                <button class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg">
+                    登入
+                </button>
+            </div>
+            <button id="menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 text-center bg-gray-700 p-4 rounded-lg shadow-inner">
+            <a href="index.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">首頁</a>
+            <a href="play.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">開始對弈</a>
+            <a href="learn.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">學習教室</a>
+            <a href="#" class="block py-2 px-4 text-yellow-400 font-bold rounded-md transition duration-300">比賽</a>
+            <a href="ranking.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">排行榜</a>
+            <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-full transition duration-300 mt-2 shadow-lg">
+                註冊
+            </button>
+            <button class="w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-full transition duration-300 mt-2 shadow-lg">
+                登入
+            </button>
+        </div>
+    </header>
+
+    <!-- 主內容區塊 -->
+    <main class="flex-grow container mx-auto p-4 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">比賽區</h1>
+
+        <!-- 比賽操作按鈕 -->
+        <section class="bg-white p-6 rounded-xl shadow-lg mb-8 text-center">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">管理您的比賽</h2>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    <span class="mr-2">📝</span>報名參賽
+                </button>
+                <button class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:-translate-y-1">
+                    <span class="mr-2">➕</span>創建新比賽
+                </button>
+            </div>
+        </section>
+
+        <!-- 目前開放比賽 -->
+        <section class="bg-white p-6 rounded-xl shadow-lg mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="text-3xl mr-2">🏆</span>目前開放比賽
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 比賽卡片範例 1 -->
+                <div class="tournament-card bg-gray-50 p-5 rounded-lg shadow-inner border border-gray-200 hover:shadow-md transition-shadow">
+                    <span class="status-badge registering mb-3 inline-block">正在報名</span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">2025 春季象棋聯賽</h3>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">開始日期:</span> 2025/07/15</p>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">報名截止:</span> 2025/07/10</p>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">類型:</span> 單敗淘汰賽</p>
+                    <p class="text-gray-700 mb-3 text-sm"><span class="font-semibold">已報名:</span> 45 / 64 人</p>
+                    <button class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300">
+                        立即報名
+                    </button>
+                </div>
+
+                <!-- 比賽卡片範例 2 -->
+                <div class="tournament-card bg-gray-50 p-5 rounded-lg shadow-inner border border-gray-200 hover:shadow-md transition-shadow">
+                    <span class="status-badge upcoming mb-3 inline-block">即將開始</span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">新手入門挑戰賽</h3>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">開始日期:</span> 2025/07/20</p>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">報名截止:</span> 2025/07/18</p>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">類型:</span> 循環賽</p>
+                    <p class="text-gray-700 mb-3 text-sm"><span class="font-semibold">已報名:</span> 28 / 32 人</p>
+                    <button class="w-full bg-gray-400 text-white font-bold py-2 px-4 rounded-full cursor-not-allowed">
+                        報名截止
+                    </button>
+                </div>
+
+                <!-- 比賽卡片範例 3 -->
+                <div class="tournament-card bg-gray-50 p-5 rounded-lg shadow-inner border border-gray-200 hover:shadow-md transition-shadow">
+                    <span class="status-badge in-progress mb-3 inline-block">進行中</span>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">夏季閃電戰</h3>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">開始日期:</span> 2025/06/25</p>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">報名截止:</span> 2025/06/24</p>
+                    <p class="text-gray-700 mb-2 text-sm"><span class="font-semibold">類型:</span> 單敗淘汰賽</p>
+                    <p class="text-gray-700 mb-3 text-sm"><span class="font-semibold">已報名:</span> 16 / 16 人</p>
+                    <button class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300">
+                        查看賽況
+                    </button>
+                </div>
+
+                <!-- 更多比賽卡片... -->
+            </div>
+        </section>
+
+        <!-- 賽程表 / 對戰表 -->
+        <section class="bg-white p-6 rounded-xl shadow-lg mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="text-3xl mr-2">📊</span>賽程與對戰表
+            </h2>
+            <p class="text-gray-700 mb-4">選擇比賽以查看詳細賽程和對戰情況。</p>
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <select class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-800 shadow-sm">
+                    <option>選擇比賽</option>
+                    <option>2025 春季象棋聯賽</option>
+                    <option>新手入門挑戰賽</option>
+                    <option>夏季閃電戰</option>
+                </select>
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300">
+                    查看賽程
+                </button>
+            </div>
+
+            <!-- 對戰表示意圖 (可替換為實際的樹狀圖或表格) -->
+            <div class="bg-gray-100 p-6 rounded-lg shadow-inner text-center text-gray-600 h-64 flex items-center justify-center">
+                對戰表將在此處顯示 (例如：淘汰賽樹狀圖或分組賽表格)
+                <img src="https://placehold.co/300x200/F0F0F0/000?text=賽程圖" alt="賽程表示意圖" class="hidden md:block ml-4">
+            </div>
+        </section>
+
+        <!-- 比賽戰況追蹤 (進行中對局即時觀戰) -->
+        <section class="bg-white p-6 rounded-xl shadow-lg mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 flex items-center">
+                <span class="text-3xl mr-2">👀</span>即時觀戰
+            </h2>
+            <p class="text-gray-700 mb-4">觀看目前正在進行中的精彩對局！</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 觀戰卡片範例 1 -->
+                <div class="p-4 bg-red-50 rounded-lg shadow-inner border border-red-200 flex items-center">
+                    <img src="https://placehold.co/60x60/F08080/fff?text=R" alt="紅方頭像" class="w-16 h-16 rounded-full mr-4 border-2 border-red-500 shadow">
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-bold text-gray-800">王棋手 vs 李大師</h3>
+                        <p class="text-gray-600 text-sm">比賽: 夏季閃電戰 | 局數: 第2輪</p>
+                        <p class="text-sm font-semibold text-red-600">進行中: 02:30 / 02:15</p>
+                    </div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300">
+                        觀戰
+                    </button>
+                </div>
+
+                <!-- 觀戰卡片範例 2 -->
+                <div class="p-4 bg-blue-50 rounded-lg shadow-inner border border-blue-200 flex items-center">
+                    <img src="https://placehold.co/60x60/87CEFA/fff?text=B" alt="黑方頭像" class="w-16 h-16 rounded-full mr-4 border-2 border-blue-500 shadow">
+                    <div class="flex-grow">
+                        <h3 class="text-xl font-bold text-gray-800">棋魂 vs 殘局王</h3>
+                        <p class="text-gray-600 text-sm">比賽: 2025 春季象棋聯賽 | 局數: 淘汰賽</p>
+                        <p class="text-sm font-semibold text-red-600">進行中: 04:10 / 03:55</p>
+                    </div>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full shadow-md transition duration-300">
+                        觀戰
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 (Footer) - 複製自首頁 -->
+    <footer class="bg-gray-800 text-white p-6 mt-12 text-center rounded-t-lg shadow-inner">
+        <div class="container mx-auto">
+            <p>&copy; 2025 象棋戰略中心. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-3">
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">隱私政策</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">使用條款</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">聯絡我們</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript 處理手機版導覽列的開關
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // 點擊選單外部隱藏選單
+            document.addEventListener('click', (event) => {
+                if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

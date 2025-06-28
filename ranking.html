@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>象棋網站 - 排行榜</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        .player-rank-item:nth-child(1) .rank-badge { background-color: #FFD700; color: #8B4513; } /* 金色 */
+        .player-rank-item:nth-child(2) .rank-badge { background-color: #C0C0C0; color: #555; } /* 銀色 */
+        .player-rank-item:nth-child(3) .rank-badge { background-color: #CD7F32; color: white; } /* 銅色 */
+        .rank-badge {
+            min-width: 3rem; /* 確保徽章有足夠寬度 */
+            height: 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            margin-right: 1rem;
+            flex-shrink: 0; /* 防止縮小 */
+        }
+        /* 排名箭頭樣式 */
+        .rank-arrow {
+            font-size: 1.2rem;
+            margin-left: 0.5rem;
+        }
+        .rank-arrow.up { color: #28a745; } /* 綠色上升 */
+        .rank-arrow.down { color: #dc3545; } /* 紅色下降 */
+        .rank-arrow.unchanged { color: #6c757d; } /* 灰色不變 */
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 導覽列 (Navbar) - 複製自首頁 -->
+    <header class="bg-gray-800 text-white shadow-md p-4 sticky top-0 z-50 rounded-b-lg">
+        <nav class="container mx-auto flex justify-between items-center flex-wrap">
+            <div class="flex items-center text-xl font-bold rounded-md">
+                <img src="https://placehold.co/40x40/FFD700/000?text=象" alt="象棋網站Logo" class="mr-2 rounded-full">
+                象棋戰略中心
+            </div>
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="index.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">首頁</a></li>
+                <li><a href="play.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">開始對弈</a></li>
+                <li><a href="learn.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">學習教室</a></li>
+                <li><a href="tournaments.html" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">比賽</a></li>
+                <li><a href="#" class="text-yellow-400 font-bold rounded-md p-2">排行榜</a></li>
+            </ul>
+            <div class="hidden md:flex space-x-3">
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg">
+                    註冊
+                </button>
+                <button class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg">
+                    登入
+                </button>
+            </div>
+            <button id="menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 text-center bg-gray-700 p-4 rounded-lg shadow-inner">
+            <a href="index.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">首頁</a>
+            <a href="play.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">開始對弈</a>
+            <a href="learn.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">學習教室</a>
+            <a href="tournaments.html" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">比賽</a>
+            <a href="#" class="block py-2 px-4 text-yellow-400 font-bold rounded-md transition duration-300">排行榜</a>
+            <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-full transition duration-300 mt-2 shadow-lg">
+                註冊
+            </button>
+            <button class="w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-full transition duration-300 mt-2 shadow-lg">
+                登入
+            </button>
+        </div>
+    </header>
+
+    <!-- 主內容區塊 -->
+    <main class="flex-grow container mx-auto p-4 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">棋力排行榜</h1>
+
+        <!-- 排行榜篩選與搜尋 -->
+        <section class="bg-white p-6 rounded-xl shadow-lg mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+                <!-- 篩選器 -->
+                <div class="flex flex-wrap gap-3">
+                    <button class="px-5 py-2 rounded-full border border-red-500 bg-red-500 text-white font-semibold shadow-md hover:bg-red-600 transition-colors duration-300">全球</button>
+                    <button class="px-5 py-2 rounded-full border border-gray-300 bg-gray-100 text-gray-700 font-semibold shadow-sm hover:bg-gray-200 transition-colors duration-300">本週</button>
+                    <button class="px-5 py-2 rounded-full border border-gray-300 bg-gray-100 text-gray-700 font-semibold shadow-sm hover:bg-gray-200 transition-colors duration-300">本地</button>
+                </div>
+                <!-- 搜尋欄 -->
+                <div class="relative w-full md:w-auto md:min-w-[250px]">
+                    <input type="text" placeholder="搜尋玩家名稱..." class="w-full p-3 pl-10 pr-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-red-500 shadow-sm text-gray-800">
+                    <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 排行榜列表 -->
+            <div class="space-y-4">
+                <!-- 列表標題 (只在桌面版顯示) -->
+                <div class="hidden md:grid grid-cols-6 gap-4 py-3 px-4 bg-gray-100 rounded-lg font-bold text-gray-700 text-sm shadow-inner">
+                    <div class="col-span-1">排名</div>
+                    <div class="col-span-2">玩家</div>
+                    <div class="col-span-1 text-right">棋力分數</div>
+                    <div class="col-span-1 text-right">勝率</div>
+                    <div class="col-span-1 text-center">排名變化</div>
+                </div>
+
+                <!-- 玩家項目範例 -->
+                <div class="player-rank-item flex items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex-wrap md:grid md:grid-cols-6 md:gap-4">
+                    <div class="rank-badge bg-gray-200 text-gray-700">1</div>
+                    <div class="flex items-center flex-grow md:col-span-2 min-w-[150px]">
+                        <img src="https://placehold.co/50x50/FFD700/000?text=A" alt="玩家頭像" class="w-12 h-12 rounded-full mr-4 border-2 border-red-500 shadow-md">
+                        <span class="font-semibold text-lg text-gray-800">棋王小明</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-xl font-bold text-red-600">
+                        2800
+                        <span class="text-sm text-gray-500 block md:hidden">棋力分數</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-gray-700">
+                        85.2%
+                        <span class="text-sm text-gray-500 block md:hidden">勝率</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-center md:col-span-1">
+                        <span class="rank-arrow up">&#x25B2; +5</span>
+                        <span class="text-sm text-gray-500 block md:hidden">排名變化</span>
+                    </div>
+                </div>
+
+                <div class="player-rank-item flex items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex-wrap md:grid md:grid-cols-6 md:gap-4">
+                    <div class="rank-badge bg-gray-200 text-gray-700">2</div>
+                    <div class="flex items-center flex-grow md:col-span-2 min-w-[150px]">
+                        <img src="https://placehold.co/50x50/C0C0C0/000?text=B" alt="玩家頭像" class="w-12 h-12 rounded-full mr-4 border-2 border-blue-500 shadow-md">
+                        <span class="font-semibold text-lg text-gray-800">棋聖老王</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-xl font-bold text-blue-600">
+                        2750
+                        <span class="text-sm text-gray-500 block md:hidden">棋力分數</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-gray-700">
+                        83.1%
+                        <span class="text-sm text-gray-500 block md:hidden">勝率</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-center md:col-span-1">
+                        <span class="rank-arrow unchanged">&#x25CF; 0</span>
+                        <span class="text-sm text-gray-500 block md:hidden">排名變化</span>
+                    </div>
+                </div>
+
+                <div class="player-rank-item flex items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex-wrap md:grid md:grid-cols-6 md:gap-4">
+                    <div class="rank-badge bg-gray-200 text-gray-700">3</div>
+                    <div class="flex items-center flex-grow md:col-span-2 min-w-[150px]">
+                        <img src="https://placehold.co/50x50/CD7F32/fff?text=C" alt="玩家頭像" class="w-12 h-12 rounded-full mr-4 border-2 border-green-500 shadow-md">
+                        <span class="font-semibold text-lg text-gray-800">無名棋手</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-xl font-bold text-green-600">
+                        2700
+                        <span class="text-sm text-gray-500 block md:hidden">棋力分數</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-gray-700">
+                        80.5%
+                        <span class="text-sm text-gray-500 block md:hidden">勝率</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-center md:col-span-1">
+                        <span class="rank-arrow up">&#x25B2; +2</span>
+                        <span class="text-sm text-gray-500 block md:hidden">排名變化</span>
+                    </div>
+                </div>
+
+                <!-- 更多玩家項目... -->
+                <div class="player-rank-item flex items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex-wrap md:grid md:grid-cols-6 md:gap-4">
+                    <div class="rank-badge bg-gray-200 text-gray-700">4</div>
+                    <div class="flex items-center flex-grow md:col-span-2 min-w-[150px]">
+                        <img src="https://placehold.co/50x50/FF6347/fff?text=D" alt="玩家頭像" class="w-12 h-12 rounded-full mr-4 border-2 border-gray-400 shadow-md">
+                        <span class="font-semibold text-lg text-gray-800">飛象高手</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-xl font-bold text-gray-700">
+                        2650
+                        <span class="text-sm text-gray-500 block md:hidden">棋力分數</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-gray-700">
+                        78.9%
+                        <span class="text-sm text-gray-500 block md:hidden">勝率</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-center md:col-span-1">
+                        <span class="rank-arrow down">&#x25BC; -1</span>
+                        <span class="text-sm text-gray-500 block md:hidden">排名變化</span>
+                    </div>
+                </div>
+
+                <div class="player-rank-item flex items-center p-4 bg-gray-50 rounded-lg shadow hover:shadow-md transition-shadow duration-200 flex-wrap md:grid md:grid-cols-6 md:gap-4">
+                    <div class="rank-badge bg-gray-200 text-gray-700">5</div>
+                    <div class="flex items-center flex-grow md:col-span-2 min-w-[150px]">
+                        <img src="https://placehold.co/50x50/4682B4/fff?text=E" alt="玩家頭像" class="w-12 h-12 rounded-full mr-4 border-2 border-gray-400 shadow-md">
+                        <span class="font-semibold text-lg text-gray-800">炮神</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-xl font-bold text-gray-700">
+                        2600
+                        <span class="text-sm text-gray-500 block md:hidden">棋力分數</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-right md:col-span-1 text-gray-700">
+                        75.0%
+                        <span class="text-sm text-gray-500 block md:hidden">勝率</span>
+                    </div>
+                    <div class="w-full text-left mt-2 md:mt-0 md:text-center md:col-span-1">
+                        <span class="rank-arrow up">&#x25B2; +3</span>
+                        <span class="text-sm text-gray-500 block md:hidden">排名變化</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 (Footer) - 複製自首頁 -->
+    <footer class="bg-gray-800 text-white p-6 mt-12 text-center rounded-t-lg shadow-inner">
+        <div class="container mx-auto">
+            <p>&copy; 2025 象棋戰略中心. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-3">
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">隱私政策</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">使用條款</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">聯絡我們</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript 處理手機版導覽列的開關
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // 點擊選單外部隱藏選單
+            document.addEventListener('click', (event) => {
+                if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

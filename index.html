@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>象棋網站 - 首頁</title>
+    <!-- 引入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* 輕微的背景色 */
+        }
+        /* 自定義滾動條樣式，使其更美觀 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #e0e0e0;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- 導覽列 (Navbar) -->
+    <header class="bg-gray-800 text-white shadow-md p-4 sticky top-0 z-50 rounded-b-lg">
+        <nav class="container mx-auto flex justify-between items-center flex-wrap">
+            <!-- Logo 和網站名稱 -->
+            <div class="flex items-center text-xl font-bold rounded-md">
+                <img src="https://placehold.co/40x40/FFD700/000?text=象" alt="象棋網站Logo" class="mr-2 rounded-full">
+                象棋戰略中心
+            </div>
+
+            <!-- 主導覽列項目 (桌面版) -->
+            <ul class="hidden md:flex space-x-6">
+                <li><a href="#" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">首頁</a></li>
+                <li><a href="#play" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">開始對弈</a></li>
+                <li><a href="#learn" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">學習教室</a></li>
+                <li><a href="#tournaments" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">比賽</a></li>
+                <li><a href="#ranking" class="hover:text-yellow-400 transition duration-300 rounded-md p-2">排行榜</a></li>
+            </ul>
+
+            <!-- 註冊 / 登入按鈕 (桌面版) -->
+            <div class="hidden md:flex space-x-3">
+                <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg">
+                    註冊
+                </button>
+                <button class="bg-gray-700 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-full transition duration-300 shadow-lg">
+                    登入
+                </button>
+            </div>
+
+            <!-- 手機版選單按鈕 -->
+            <button id="menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+
+        <!-- 手機版下拉選單 -->
+        <div id="mobile-menu" class="hidden md:hidden mt-4 space-y-2 text-center bg-gray-700 p-4 rounded-lg shadow-inner">
+            <a href="#" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">首頁</a>
+            <a href="#play" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">開始對弈</a>
+            <a href="#learn" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">學習教室</a>
+            <a href="#tournaments" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">比賽</a>
+            <a href="#ranking" class="block py-2 px-4 text-white hover:bg-gray-600 rounded-md transition duration-300">排行榜</a>
+            <button class="w-full bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-semibold py-2 px-4 rounded-full transition duration-300 mt-2 shadow-lg">
+                註冊
+            </button>
+            <button class="w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded-full transition duration-300 mt-2 shadow-lg">
+                登入
+            </button>
+        </div>
+    </header>
+
+    <!-- 主內容區塊 -->
+    <main class="flex-grow container mx-auto p-4 md:p-8">
+
+        <!-- 橫幅 Banner -->
+        <section class="bg-gradient-to-r from-red-700 to-red-900 text-white p-8 md:p-12 rounded-xl shadow-2xl mb-12 transform hover:scale-105 transition-transform duration-500 ease-in-out border-4 border-yellow-400">
+            <div class="max-w-3xl mx-auto text-center">
+                <h1 class="text-3xl md:text-5xl font-extrabold mb-4 drop-shadow-lg animate-fade-in-down">探索象棋的無限可能</h1>
+                <p class="text-lg md:text-xl mb-6 leading-relaxed opacity-90 animate-fade-in-up">
+                    最新活動：AI智能棋手挑戰賽火熱進行中！提升棋藝，贏取豐厚獎勵！
+                </p>
+                <a href="#activity" class="inline-block bg-yellow-400 hover:bg-yellow-300 text-red-900 font-bold py-3 px-8 rounded-full text-xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+                    立即參與 <span class="ml-2">&#x27A4;</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 熱門功能快捷入口 -->
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <!-- AI 對戰卡片 -->
+            <a href="#play-ai" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out border-2 border-transparent hover:border-red-500 group">
+                <div class="text-center">
+                    <span class="text-5xl mb-4 block group-hover:text-red-600 transition-colors duration-300">🧠</span>
+                    <h2 class="text-2xl font-semibold mb-2 text-gray-800 group-hover:text-red-700 transition-colors duration-300">AI 對戰</h2>
+                    <p class="text-gray-600">挑戰不同難度的AI棋手，提升您的棋力！</p>
+                </div>
+            </a>
+
+            <!-- 玩家配對卡片 -->
+            <a href="#play-match" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out border-2 border-transparent hover:border-red-500 group">
+                <div class="text-center">
+                    <span class="text-5xl mb-4 block group-hover:text-red-600 transition-colors duration-300">🧍</span>
+                    <h2 class="text-2xl font-semibold mb-2 text-gray-800 group-hover:text-red-700 transition-colors duration-300">玩家配對</h2>
+                    <p class="text-gray-600">與全球玩家即時對戰，體驗真人博弈的樂趣。</p>
+                </div>
+            </a>
+
+            <!-- 初學教室卡片 -->
+            <a href="#learn-basics" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out border-2 border-transparent hover:border-red-500 group">
+                <div class="text-center">
+                    <span class="text-5xl mb-4 block group-hover:text-red-600 transition-colors duration-300">🎓</span>
+                    <h2 class="text-2xl font-semibold mb-2 text-gray-800 group-hover:text-red-700 transition-colors duration-300">初學教室</h2>
+                    <p class="text-gray-600">從零開始學象棋，掌握基礎規則與技巧。</p>
+                </div>
+            </a>
+
+            <!-- 棋力排行卡片 -->
+            <a href="#ranking-view" class="block bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300 ease-in-out border-2 border-transparent hover:border-red-500 group">
+                <div class="text-center">
+                    <span class="text-5xl mb-4 block group-hover:text-red-600 transition-colors duration-300">📈</span>
+                    <h2 class="text-2xl font-semibold mb-2 text-gray-800 group-hover:text-red-700 transition-colors duration-300">棋力排行</h2>
+                    <p class="text-gray-600">查看您的全球排名，向頂尖高手邁進！</p>
+                </div>
+            </a>
+        </section>
+
+        <!-- 額外內容區塊 (可擴充，例如最新棋譜、熱門影片等) -->
+        <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">最新動態與精選內容</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 最新棋譜 -->
+                <div class="p-6 bg-gray-50 rounded-lg shadow-inner border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">精選對局回顧</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li><a href="#" class="hover:text-red-600 transition duration-200">&#x25B6; AI大師 vs 王者歸來：一盤殘局妙手</a></li>
+                        <li><a href="#" class="hover:text-red-600 transition duration-200">&#x25B6; 2025春季聯賽決賽：紅方先手制勝</a></li>
+                        <li><a href="#" class="hover:text-red-600 transition duration-200">&#x25B6; 初學者的第一步：實戰案例分析</a></li>
+                    </ul>
+                </div>
+                <!-- 熱門教學影片 -->
+                <div class="p-6 bg-gray-50 rounded-lg shadow-inner border border-gray-200">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-3">熱門教學影片</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/100x60/3498db/fff?text=影片" alt="教學影片縮圖" class="w-24 h-16 object-cover rounded-md mr-4 shadow">
+                            <div>
+                                <h4 class="font-medium text-gray-800">當頭炮開局精講</h4>
+                                <p class="text-sm text-gray-600">象棋大師李明帶你深入解析當頭炮佈局。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/100x60/2ecc71/fff?text=影片" alt="教學影片縮圖" class="w-24 h-16 object-cover rounded-md mr-4 shadow">
+                            <div>
+                                <h4 class="font-medium text-gray-800">象棋殘局入門技巧</h4>
+                                <p class="text-sm text-gray-600">學習經典殘局，提升你的收官能力。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 (Footer) -->
+    <footer class="bg-gray-800 text-white p-6 mt-12 text-center rounded-t-lg shadow-inner">
+        <div class="container mx-auto">
+            <p>&copy; 2025 象棋戰略中心. All rights reserved.</p>
+            <div class="flex justify-center space-x-4 mt-3">
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">隱私政策</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">使用條款</a>
+                <span class="text-gray-500">|</span>
+                <a href="#" class="text-gray-400 hover:text-yellow-400 transition duration-300">聯絡我們</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript 處理手機版導覽列的開關
+        const menuButton = document.getElementById('menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        if (menuButton && mobileMenu) {
+            menuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // 點擊選單外部隱藏選單
+            document.addEventListener('click', (event) => {
+                if (!mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
